@@ -25,37 +25,43 @@ namespace SmartCode.Generator.BuildTasks
 
         public abstract Task Build(BuildContext context);
 
-        public virtual void Initialize(IDictionary<string, object> paramters)
+        public virtual void Initialize(IDictionary<string, object> parameters)
         {
             this.Initialized = true;
         }
 
-        protected IEnumerable<Table> FilterTable(IEnumerable<Table> tables, string buildKey, Build build)
+        protected IList<Table> FilterTable(IEnumerable<Table> tables, string buildKey, Build build)
         {
             _logger.LogInformation($"FilterTable Build:{buildKey} Start!");
             IEnumerable<Table> buildTables = CopyTables(tables);
-            if (build.IgnoreNoPKTable)
+            if (build.IgnoreNoPKTable.HasValue && build.IgnoreNoPKTable.Value)
             {
                 _logger.LogInformation($"FilterTable Build:{buildKey} IgnoreNoPKTable!");
                 buildTables = buildTables.Where(m => m.PKColumn != null);
             }
-            if (build.IgnoreView)
+
+            if (build.IgnoreView.HasValue && build.IgnoreView.Value)
             {
                 _logger.LogInformation($"FilterTable Build:{buildKey} IgnoreView!");
                 buildTables = buildTables.Where(m => m.Type != Table.TableType.View);
             }
+
             if (build.IgnoreTables != null)
             {
-                _logger.LogInformation($"FilterTable Build:{buildKey} IgnoreTables: [{String.Join(",", build.IgnoreTables)}]!");
+                _logger.LogInformation(
+                    $"FilterTable Build:{buildKey} IgnoreTables: [{String.Join(",", build.IgnoreTables)}]!");
                 buildTables = buildTables.Where(m => !build.IgnoreTables.Contains(m.Name));
             }
+
             if (build.IncludeTables != null)
             {
-                _logger.LogInformation($"FilterTable Build:{buildKey} IncludeTables: [{String.Join(",", build.IncludeTables)}]!");
+                _logger.LogInformation(
+                    $"FilterTable Build:{buildKey} IncludeTables: [{String.Join(",", build.IncludeTables)}]!");
                 buildTables = buildTables.Where(m => build.IncludeTables.Contains(m.Name));
             }
+
             _logger.LogInformation($"FilterTable Build:{buildKey} End!");
-            return buildTables;
+            return buildTables.ToList();
         }
 
         protected IList<Table> CopyTables(IEnumerable<Table> tables)

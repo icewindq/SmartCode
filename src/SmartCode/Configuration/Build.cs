@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace SmartCode.Configuration
@@ -16,12 +17,12 @@ namespace SmartCode.Configuration
         public Output Output { get; set; }
         public IEnumerable<String> IncludeTables { get; set; }
         public IEnumerable<String> IgnoreTables { get; set; }
-        public bool IgnoreNoPKTable { get; set; }
-        public bool IgnoreView { get; set; }
+        public bool? IgnoreNoPKTable { get; set; }
+        public bool? IgnoreView { get; set; }
         public NamingConverter NamingConverter { get; set; }
         /// <summary>
         /// 自定义构建参数
         /// </summary>
-        public IDictionary<String, object> Paramters { get; set; }
+        public IDictionary<String, object> Parameters { get; set; }
     }
 }

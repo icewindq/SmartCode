@@ -18,9 +18,10 @@ namespace SmartCode.Generator.BuildTasks
             _pluginManager = pluginManager;
             _logger = logger;
         }
-        public async override Task Build(BuildContext context)
+        public override async Task Build(BuildContext context)
         {
-            var filterTables = FilterTable(context.GetDataSource<DbTableSource>().Tables, context.BuildKey, context.Build);
+            
+            var filterTables = FilterTable(context.GetDataSource<ITableSource>().Tables, context.BuildKey, context.Build);
             context.SetCurrentAllTable(filterTables);
             foreach (var table in filterTables)
             {

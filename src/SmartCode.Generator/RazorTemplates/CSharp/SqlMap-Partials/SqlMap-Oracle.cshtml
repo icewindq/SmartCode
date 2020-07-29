@@ -35,11 +35,14 @@
     <!--获取表映射实体-->
     <Statement Id="GetEntity" @queryStatementResultMap>
         Select T.* From @table.Name T
-        <Where>
+        <Where Min="1">
             ROWNUM = 1
-            <IsNotEmpty Prepend="And" Property="@pkCol.ConvertedName">
-                T.@pkCol.Name=@dbPrefix@pkCol.ConvertedName
+        @foreach (var col in table.Columns)
+        {
+            <IsNotEmpty Prepend="And" Property="@col.ConvertedName">
+                T.@col.Name= @($"{dbPrefix}{col.ConvertedName}")
             </IsNotEmpty>
+        }
         </Where>
     </Statement>
 }

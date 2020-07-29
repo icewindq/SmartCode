@@ -16,7 +16,7 @@ namespace SmartCode.ETL
         {
             return Task.CompletedTask;
         }
-        public Task Fail(long etlTaskId, string errMsg)
+        public Task Fail(long etlTaskId, Exception errorException)
         {
             return Task.CompletedTask;
         }
@@ -31,7 +31,7 @@ namespace SmartCode.ETL
             return Task.FromResult(new ETLTask());
         }
 
-        public void Initialize(IDictionary<string, object> paramters)
+        public void Initialize(IDictionary<string, object> parameters)
         {
 
         }

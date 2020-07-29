@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SmartCode.Configuration;
 using SmartCode.Generator.Entity;
-using SmartSql.Abstractions;
+using SmartSql;
 
 namespace SmartCode.Db
 {
@@ -32,13 +32,13 @@ namespace SmartCode.Db
                     }
             }
         }
-        public async Task<IEnumerable<Table>> QueryTable()
+        public async Task<IList<Table>> QueryTable()
         {
             _logger.LogInformation($"----Db:{DbName} Provider:{DbProviderName}, QueryTable Start! ----");
-            IEnumerable<Table> tables;
+            IList<Table> tables;
             try
             {
-                SqlMapper.BeginSession();
+                SqlMapper.SessionStore.Open();
                 tables = await SqlMapper.QueryAsync<Table>(new RequestContext
                 {
                     Scope = Scope,
@@ -57,7 +57,7 @@ namespace SmartCode.Db
             }
             finally
             {
-                SqlMapper.EndSession();
+                SqlMapper.SessionStore.Dispose();
             }
             _logger.LogInformation($"----Db:{DbName} Provider:{DbProviderName},Tables:{tables.Count()} QueryTable End! ----");
             return tables;

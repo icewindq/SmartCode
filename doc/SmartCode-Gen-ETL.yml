@@ -3,14 +3,16 @@ Module: SqlServer2PG
 Author: Ahoo Wang
 DataSource:
   Name: DbTable
-  Paramters:
+  Parameters:
     DbName: SqlServerDB
     DbProvider: SqlServer
     ConnectionString: Data Source=localhost;database=SqlServerDB;uid=SmartSql;pwd=SmartSql
 Language: PostgreSql
-TemplateEngine: Razor
-Paramters:
-  ExtractMode: QueryTime
+TemplateEngine: 
+   Name: Razor
+   Root: .
+Parameters:
+  ExtractMode: LastMaxModifyTime
   ModifyTime: ModifyTime
   ExtractConnectionString: Data Source=localhost;database=SqlServerDB;uid=SmartSql;pwd=SmartSql
   LoadDbProvider: PostgreSql
@@ -24,13 +26,14 @@ Build:
 
   ClearDir:
     Type: Clear
-    Paramters:
+    Parameters:
       Dirs: '.'
 # 生成迁移SQL
   DbToPGSql:
     Type: Single
     Module: SmartCode
-    Template: Sql/DbToPGSql.cshtml
+    TemplateEngine: 
+      Path: Sql/DbToPGSql.cshtml
     IgnoreNoPKTable: true
     Output: 
       Path: '.'
@@ -40,13 +43,13 @@ Build:
       Table:
         Tokenizer: 
           Type: Default
-          Paramters: 
+          Parameters: 
             IgnorePrefix: 'T_'
             Delimiter: '_'
             UppercaseSplit: true
         Converter:
           Type: Delimiter
-          Paramters: 
+          Parameters: 
             Delimiter: '_'
             Mode: AllLower
             Prefix: smartcode_
@@ -54,19 +57,20 @@ Build:
       Column:
         Tokenizer: 
           Type: Default
-          Paramters: 
+          Parameters: 
             Delimiter: '_'
             UppercaseSplit: true
         Converter:
           Type: Delimiter
-          Paramters: 
+          Parameters: 
             Delimiter: '_'
             Mode: AllLower
 # 生成 SmartCode.ETL 数据迁移构建配置
   ToPGBuild:
     Type: Table
     Module: SmartCode
-    Template: ETL/ToPGBuild.cshtml
+    TemplateEngine: 
+      Path: ETL/ToPGBuild.cshtml
     IgnoreNoPKTable: true
     Output: 
       Path: '.'
@@ -76,24 +80,24 @@ Build:
       Table:
         Tokenizer: 
           Type: Default
-          Paramters: 
+          Parameters: 
             IgnorePrefix: 'T_'
             Delimiter: '_'
             UppercaseSplit: true
         Converter:
           Type: Delimiter
-          Paramters: 
+          Parameters: 
             Delimiter: '_'
             Mode: AllLower
             Prefix: smartcode_
       Column:
         Tokenizer: 
           Type: Default
-          Paramters: 
+          Parameters: 
             Delimiter: '_'
             UppercaseSplit: true
         Converter:
           Type: Delimiter
-          Paramters: 
+          Parameters: 
             Delimiter: '_'
             Mode: AllLower
